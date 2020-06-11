@@ -74,7 +74,7 @@ def apply_mask(image, mask, color, alpha=0.5):
     """
     #if image is greyscale convert to 3 channels
     if image.shape[2]==1:
-        image=cv2.cvtColor(np.float32(image), cv2.COLOR_RGB2GRAY)
+        image=cv2.cvtColor(np.float32(image), cv2.COLOR_GRAY2RGB)
     for c in range(3):
         image[:, :, c] = np.where(mask == 1,
                                   image[:, :, c] *
