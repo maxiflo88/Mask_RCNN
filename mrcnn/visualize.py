@@ -72,7 +72,8 @@ def random_colors(N, bright=True):
 def apply_mask(image, mask, color, alpha=0.5):
     """Apply the given mask to the image.
     """
-    for c in range(3):
+    channels=image.shape[2]
+    for c in range(channels):
         image[:, :, c] = np.where(mask == 1,
                                   image[:, :, c] *
                                   (1 - alpha) + alpha * color[c] * 255,
@@ -162,6 +163,13 @@ def display_instances(image, boxes, masks, class_ids, class_names,
             verts = np.fliplr(verts) - 1
             p = Polygon(verts, facecolor="none", edgecolor=color)
             ax.add_patch(p)
+    #if image is greyscale convert to 3 channels
+    if masked_image.shape[2]==1:
+      new_masked=np.zeros((masked_image.shape[0],masked_image.shape[1], 3))
+      new_masked[0]=masked_image[0]
+      new_masked[1]=masked_image[0]
+      new_masked[2]=masked_image[0]
+      masked_image=new_masked
     ax.imshow(masked_image.astype(np.uint8))
     if auto_show:
         plt.show()
